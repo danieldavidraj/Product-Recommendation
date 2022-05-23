@@ -1,0 +1,9 @@
+django
+mysqlclient
+pandas
+sqlalchemy
+gunicorn
+whitenoise
+surprise
+scipy
+sklearn

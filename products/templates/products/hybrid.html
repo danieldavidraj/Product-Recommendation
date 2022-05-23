@@ -1,0 +1,939 @@
+<html lang="en">
+  <head>
+    {% load static %}
+    {% load products_extras %}
+    <meta charset="utf-8">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="shortcut icon" href="./favicon.png">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <title>Product Recommendation System</title>
+    <meta name="description" content="React Admin Dashboard Template built with Bootstrap, Redux and React Router by Flatlogic. Over 40 unique pages, hundreds of components and theme support.">
+    <meta name="keywords" content="react admin, react dashboard, react admin template, react theme, react dashboard template, react dashboard template">
+    <meta name="author" content="Flatlogic LLC.">
+    <link href="{% static '3.dfff9add.chunk.css' %}" rel="stylesheet">
+    <link href="{% static 'main.ae6cce39.chunk.css' %}" rel="stylesheet">
+    <style type="text/css">
+    .apexcharts-canvas {
+      position: relative;
+      user-select: none;
+      /* cannot give overflow: hidden as it will crop tooltips which overflow outside chart area */
+      }
+      /* scrollbar is not visible by default for legend, hence forcing the visibility */
+      .apexcharts-canvas ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 6px;
+      }
+      .apexcharts-canvas ::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: rgba(0, 0, 0, .5);
+      box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+      -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+      }
+      .apexcharts-inner {
+      position: relative;
+      }
+      .apexcharts-text tspan {
+      font-family: inherit;
+      }
+      .legend-mouseover-inactive {
+      transition: 0.15s ease all;
+      opacity: 0.20;
+      }
+      .apexcharts-series-collapsed {
+      opacity: 0;
+      }
+      .apexcharts-tooltip {
+      border-radius: 5px;
+      box-shadow: 2px 2px 6px -4px #999;
+      cursor: default;
+      font-size: 14px;
+      left: 62px;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      white-space: nowrap;
+      z-index: 12;
+      transition: 0.15s ease all;
+      }
+      .apexcharts-tooltip.apexcharts-active {
+      opacity: 1;
+      transition: 0.15s ease all;
+      }
+      .apexcharts-tooltip.apexcharts-theme-light {
+      border: 1px solid #e3e3e3;
+      background: rgba(255, 255, 255, 0.96);
+      }
+      .apexcharts-tooltip.apexcharts-theme-dark {
+      color: #fff;
+      background: rgba(30, 30, 30, 0.8);
+      }
+      .apexcharts-tooltip * {
+      font-family: inherit;
+      }
+      .apexcharts-tooltip-title {
+      padding: 6px;
+      font-size: 15px;
+      margin-bottom: 4px;
+      }
+      .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+      background: #ECEFF1;
+      border-bottom: 1px solid #ddd;
+      }
+      .apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-title {
+      background: rgba(0, 0, 0, 0.7);
+      border-bottom: 1px solid #333;
+      }
+      .apexcharts-tooltip-text-value,
+      .apexcharts-tooltip-text-z-value {
+      display: inline-block;
+      font-weight: 600;
+      margin-left: 5px;
+      }
+      .apexcharts-tooltip-text-z-label:empty,
+      .apexcharts-tooltip-text-z-value:empty {
+      display: none;
+      }
+      .apexcharts-tooltip-text-value,
+      .apexcharts-tooltip-text-z-value {
+      font-weight: 600;
+      }
+      .apexcharts-tooltip-marker {
+      min-width: 12px;
+      min-height: 12px;
+      position: relative;
+      top: 0px;
+      margin-right: 10px;
+      border-radius: 50%;
+      }
+      .apexcharts-tooltip-series-group {
+      padding: 0 10px;
+      display: none;
+      text-align: left;
+      justify-content: left;
+      align-items: center;
+      }
+      .apexcharts-tooltip-series-group.apexcharts-active .apexcharts-tooltip-marker {
+      opacity: 1;
+      }
+      .apexcharts-tooltip-series-group.apexcharts-active,
+      .apexcharts-tooltip-series-group:last-child {
+      padding-bottom: 4px;
+      }
+      .apexcharts-tooltip-series-group-hidden {
+      opacity: 0;
+      height: 0;
+      line-height: 0;
+      padding: 0 !important;
+      }
+      .apexcharts-tooltip-y-group {
+      padding: 6px 0 5px;
+      }
+      .apexcharts-tooltip-box, .apexcharts-custom-tooltip {
+      padding: 4px 8px;
+      }
+      .apexcharts-tooltip-boxPlot {
+      display: flex;
+      flex-direction: column-reverse;
+      }
+      .apexcharts-tooltip-box>div {
+      margin: 4px 0;
+      }
+      .apexcharts-tooltip-box span.value {
+      font-weight: bold;
+      }
+      .apexcharts-tooltip-rangebar {
+      padding: 5px 8px;
+      }
+      .apexcharts-tooltip-rangebar .category {
+      font-weight: 600;
+      color: #777;
+      }
+      .apexcharts-tooltip-rangebar .series-name {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      }
+      .apexcharts-xaxistooltip {
+      opacity: 0;
+      padding: 9px 10px;
+      pointer-events: none;
+      color: #373d3f;
+      font-size: 13px;
+      text-align: center;
+      border-radius: 2px;
+      position: absolute;
+      z-index: 10;
+      background: #ECEFF1;
+      border: 1px solid #90A4AE;
+      transition: 0.15s ease all;
+      }
+      .apexcharts-xaxistooltip.apexcharts-theme-dark {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      color: #fff;
+      }
+      .apexcharts-xaxistooltip:after,
+      .apexcharts-xaxistooltip:before {
+      left: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      }
+      .apexcharts-xaxistooltip:after {
+      border-color: rgba(236, 239, 241, 0);
+      border-width: 6px;
+      margin-left: -6px;
+      }
+      .apexcharts-xaxistooltip:before {
+      border-color: rgba(144, 164, 174, 0);
+      border-width: 7px;
+      margin-left: -7px;
+      }
+      .apexcharts-xaxistooltip-bottom:after,
+      .apexcharts-xaxistooltip-bottom:before {
+      bottom: 100%;
+      }
+      .apexcharts-xaxistooltip-top:after,
+      .apexcharts-xaxistooltip-top:before {
+      top: 100%;
+      }
+      .apexcharts-xaxistooltip-bottom:after {
+      border-bottom-color: #ECEFF1;
+      }
+      .apexcharts-xaxistooltip-bottom:before {
+      border-bottom-color: #90A4AE;
+      }
+      .apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:after {
+      border-bottom-color: rgba(0, 0, 0, 0.5);
+      }
+      .apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:before {
+      border-bottom-color: rgba(0, 0, 0, 0.5);
+      }
+      .apexcharts-xaxistooltip-top:after {
+      border-top-color: #ECEFF1
+      }
+      .apexcharts-xaxistooltip-top:before {
+      border-top-color: #90A4AE;
+      }
+      .apexcharts-xaxistooltip-top.apexcharts-theme-dark:after {
+      border-top-color: rgba(0, 0, 0, 0.5);
+      }
+      .apexcharts-xaxistooltip-top.apexcharts-theme-dark:before {
+      border-top-color: rgba(0, 0, 0, 0.5);
+      }
+      .apexcharts-xaxistooltip.apexcharts-active {
+      opacity: 1;
+      transition: 0.15s ease all;
+      }
+      .apexcharts-yaxistooltip {
+      opacity: 0;
+      padding: 4px 10px;
+      pointer-events: none;
+      color: #373d3f;
+      font-size: 13px;
+      text-align: center;
+      border-radius: 2px;
+      position: absolute;
+      z-index: 10;
+      background: #ECEFF1;
+      border: 1px solid #90A4AE;
+      }
+      .apexcharts-yaxistooltip.apexcharts-theme-dark {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      color: #fff;
+      }
+      .apexcharts-yaxistooltip:after,
+      .apexcharts-yaxistooltip:before {
+      top: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      }
+      .apexcharts-yaxistooltip:after {
+      border-color: rgba(236, 239, 241, 0);
+      border-width: 6px;
+      margin-top: -6px;
+      }
+      .apexcharts-yaxistooltip:before {
+      border-color: rgba(144, 164, 174, 0);
+      border-width: 7px;
+      margin-top: -7px;
+      }
+      .apexcharts-yaxistooltip-left:after,
+      .apexcharts-yaxistooltip-left:before {
+      left: 100%;
+      }
+      .apexcharts-yaxistooltip-right:after,
+      .apexcharts-yaxistooltip-right:before {
+      right: 100%;
+      }
+      .apexcharts-yaxistooltip-left:after {
+      border-left-color: #ECEFF1;
+      }
+      .apexcharts-yaxistooltip-left:before {
+      border-left-color: #90A4AE;
+      }
+      .apexcharts-yaxistooltip-left.apexcharts-theme-dark:after {
+      border-left-color: rgba(0, 0, 0, 0.5);
+      }
+      .apexcharts-yaxistooltip-left.apexcharts-theme-dark:before {
+      border-left-color: rgba(0, 0, 0, 0.5);
+      }
+      .apexcharts-yaxistooltip-right:after {
+      border-right-color: #ECEFF1;
+      }
+      .apexcharts-yaxistooltip-right:before {
+      border-right-color: #90A4AE;
+      }
+      .apexcharts-yaxistooltip-right.apexcharts-theme-dark:after {
+      border-right-color: rgba(0, 0, 0, 0.5);
+      }
+      .apexcharts-yaxistooltip-right.apexcharts-theme-dark:before {
+      border-right-color: rgba(0, 0, 0, 0.5);
+      }
+      .apexcharts-yaxistooltip.apexcharts-active {
+      opacity: 1;
+      }
+      .apexcharts-yaxistooltip-hidden {
+      display: none;
+      }
+      .apexcharts-xcrosshairs,
+      .apexcharts-ycrosshairs {
+      pointer-events: none;
+      opacity: 0;
+      transition: 0.15s ease all;
+      }
+      .apexcharts-xcrosshairs.apexcharts-active,
+      .apexcharts-ycrosshairs.apexcharts-active {
+      opacity: 1;
+      transition: 0.15s ease all;
+      }
+      .apexcharts-ycrosshairs-hidden {
+      opacity: 0;
+      }
+      .apexcharts-selection-rect {
+      cursor: move;
+      }
+      .svg_select_boundingRect, .svg_select_points_rot {
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      }
+      .apexcharts-selection-rect + g .svg_select_boundingRect,
+      .apexcharts-selection-rect + g .svg_select_points_rot {
+      opacity: 0;
+      visibility: hidden;
+      }
+      .apexcharts-selection-rect + g .svg_select_points_l,
+      .apexcharts-selection-rect + g .svg_select_points_r {
+      cursor: ew-resize;
+      opacity: 1;
+      visibility: visible;
+      }
+      .svg_select_points {
+      fill: #efefef;
+      stroke: #333;
+      rx: 2;
+      }
+      .apexcharts-svg.apexcharts-zoomable.hovering-zoom {
+      cursor: crosshair
+      }
+      .apexcharts-svg.apexcharts-zoomable.hovering-pan {
+      cursor: move
+      }
+      .apexcharts-zoom-icon,
+      .apexcharts-zoomin-icon,
+      .apexcharts-zoomout-icon,
+      .apexcharts-reset-icon,
+      .apexcharts-pan-icon,
+      .apexcharts-selection-icon,
+      .apexcharts-menu-icon,
+      .apexcharts-toolbar-custom-icon {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      line-height: 24px;
+      color: #6E8192;
+      text-align: center;
+      }
+      .apexcharts-zoom-icon svg,
+      .apexcharts-zoomin-icon svg,
+      .apexcharts-zoomout-icon svg,
+      .apexcharts-reset-icon svg,
+      .apexcharts-menu-icon svg {
+      fill: #6E8192;
+      }
+      .apexcharts-selection-icon svg {
+      fill: #444;
+      transform: scale(0.76)
+      }
+      .apexcharts-theme-dark .apexcharts-zoom-icon svg,
+      .apexcharts-theme-dark .apexcharts-zoomin-icon svg,
+      .apexcharts-theme-dark .apexcharts-zoomout-icon svg,
+      .apexcharts-theme-dark .apexcharts-reset-icon svg,
+      .apexcharts-theme-dark .apexcharts-pan-icon svg,
+      .apexcharts-theme-dark .apexcharts-selection-icon svg,
+      .apexcharts-theme-dark .apexcharts-menu-icon svg,
+      .apexcharts-theme-dark .apexcharts-toolbar-custom-icon svg {
+      fill: #f3f4f5;
+      }
+      .apexcharts-canvas .apexcharts-zoom-icon.apexcharts-selected svg,
+      .apexcharts-canvas .apexcharts-selection-icon.apexcharts-selected svg,
+      .apexcharts-canvas .apexcharts-reset-zoom-icon.apexcharts-selected svg {
+      fill: #008FFB;
+      }
+      .apexcharts-theme-light .apexcharts-selection-icon:not(.apexcharts-selected):hover svg,
+      .apexcharts-theme-light .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg,
+      .apexcharts-theme-light .apexcharts-zoomin-icon:hover svg,
+      .apexcharts-theme-light .apexcharts-zoomout-icon:hover svg,
+      .apexcharts-theme-light .apexcharts-reset-icon:hover svg,
+      .apexcharts-theme-light .apexcharts-menu-icon:hover svg {
+      fill: #333;
+      }
+      .apexcharts-selection-icon,
+      .apexcharts-menu-icon {
+      position: relative;
+      }
+      .apexcharts-reset-icon {
+      margin-left: 5px;
+      }
+      .apexcharts-zoom-icon,
+      .apexcharts-reset-icon,
+      .apexcharts-menu-icon {
+      transform: scale(0.85);
+      }
+      .apexcharts-zoomin-icon,
+      .apexcharts-zoomout-icon {
+      transform: scale(0.7)
+      }
+      .apexcharts-zoomout-icon {
+      margin-right: 3px;
+      }
+      .apexcharts-pan-icon {
+      transform: scale(0.62);
+      position: relative;
+      left: 1px;
+      top: 0px;
+      }
+      .apexcharts-pan-icon svg {
+      fill: #fff;
+      stroke: #6E8192;
+      stroke-width: 2;
+      }
+      .apexcharts-pan-icon.apexcharts-selected svg {
+      stroke: #008FFB;
+      }
+      .apexcharts-pan-icon:not(.apexcharts-selected):hover svg {
+      stroke: #333;
+      }
+      .apexcharts-toolbar {
+      position: absolute;
+      z-index: 11;
+      max-width: 176px;
+      text-align: right;
+      border-radius: 3px;
+      padding: 0px 6px 2px 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      }
+      .apexcharts-menu {
+      background: #fff;
+      position: absolute;
+      top: 100%;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      padding: 3px;
+      right: 10px;
+      opacity: 0;
+      min-width: 110px;
+      transition: 0.15s ease all;
+      pointer-events: none;
+      }
+      .apexcharts-menu.apexcharts-menu-open {
+      opacity: 1;
+      pointer-events: all;
+      transition: 0.15s ease all;
+      }
+      .apexcharts-menu-item {
+      padding: 6px 7px;
+      font-size: 12px;
+      cursor: pointer;
+      }
+      .apexcharts-theme-light .apexcharts-menu-item:hover {
+      background: #eee;
+      }
+      .apexcharts-theme-dark .apexcharts-menu {
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      }
+      @media screen and (min-width: 768px) {
+      .apexcharts-canvas:hover .apexcharts-toolbar {
+      opacity: 1;
+      }
+      }
+      .apexcharts-datalabel.apexcharts-element-hidden {
+      opacity: 0;
+      }
+      .apexcharts-pie-label,
+      .apexcharts-datalabels,
+      .apexcharts-datalabel,
+      .apexcharts-datalabel-label,
+      .apexcharts-datalabel-value {
+      cursor: default;
+      pointer-events: none;
+      }
+      .apexcharts-pie-label-delay {
+      opacity: 0;
+      animation-name: opaque;
+      animation-duration: 0.3s;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease;
+      }
+      .apexcharts-canvas .apexcharts-element-hidden {
+      opacity: 0;
+      }
+      .apexcharts-hide .apexcharts-series-points {
+      opacity: 0;
+      }
+      .apexcharts-gridline,
+      .apexcharts-annotation-rect,
+      .apexcharts-tooltip .apexcharts-marker,
+      .apexcharts-area-series .apexcharts-area,
+      .apexcharts-line,
+      .apexcharts-zoom-rect,
+      .apexcharts-toolbar svg,
+      .apexcharts-area-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events,
+      .apexcharts-line-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events,
+      .apexcharts-radar-series path,
+      .apexcharts-radar-series polygon {
+      pointer-events: none;
+      }
+      /* markers */
+      .apexcharts-marker {
+      transition: 0.15s ease all;
+      }
+      @keyframes opaque {
+      0% {
+      opacity: 0;
+      }
+      100% {
+      opacity: 1;
+      }
+      }
+      /* Resize generated styles */
+      @keyframes resizeanim {
+      from {
+      opacity: 0;
+      }
+      to {
+      opacity: 0;
+      }
+      }
+      .resize-triggers {
+      animation: 1ms resizeanim;
+      visibility: hidden;
+      opacity: 0;
+      }
+      .resize-triggers,
+      .resize-triggers>div,
+      .contract-trigger:before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      }
+      .resize-triggers>div {
+      background: #eee;
+      overflow: auto;
+      }
+      .contract-trigger:before {
+      width: 200%;
+      height: 200%;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root">
+      <div>
+        <div class="Toastify"></div>
+        <div class="Layout_root__3U3IB sidebar-left sidebar-show dashboard-default">
+          <div class="Layout_wrap__TDgEv">
+            <nav class="d-print-none navbar">
+              <div class="Header_burger__30tL2">
+                <a href="#" class="d-md-none Header_navItem__2wuiU text-white nav-link">
+                  <svg class="Header_headerIcon__14K5N" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M3.29024 5H16.7094C17.1444 5 17.5002 5.35583 17.5002 5.79083V5.87583C17.5002 6.31083 17.1444 6.66667 16.7094 6.66667H3.29024C2.85524 6.66667 2.50024 6.31083 2.50024 5.87583V5.79083C2.50024 5.35583 2.85524 5 3.29024 5ZM16.7094 9.16667H3.29024C2.85524 9.16667 2.50024 9.5225 2.50024 9.9575V10.0425C2.50024 10.4775 2.85524 10.8333 3.29024 10.8333H16.7094C17.1444 10.8333 17.5002 10.4775 17.5002 10.0425V9.9575C17.5002 9.5225 17.1444 9.16667 16.7094 9.16667ZM16.7094 13.3333H3.29024C2.85524 13.3333 2.50024 13.6892 2.50024 14.1242V14.2092C2.50024 14.6442 2.85524 15 3.29024 15H16.7094C17.1444 15 17.5002 14.6442 17.5002 14.2092V14.1242C17.5002 13.6892 17.1444 13.3333 16.7094 13.3333Z"></path>
+                    <mask id="burger" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="5" width="16" height="10">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M3.29024 5H16.7094C17.1444 5 17.5002 5.35583 17.5002 5.79083V5.87583C17.5002 6.31083 17.1444 6.66667 16.7094 6.66667H3.29024C2.85524 6.66667 2.50024 6.31083 2.50024 5.87583V5.79083C2.50024 5.35583 2.85524 5 3.29024 5ZM16.7094 9.16667H3.29024C2.85524 9.16667 2.50024 9.5225 2.50024 9.9575V10.0425C2.50024 10.4775 2.85524 10.8333 3.29024 10.8333H16.7094C17.1444 10.8333 17.5002 10.4775 17.5002 10.0425V9.9575C17.5002 9.5225 17.1444 9.16667 16.7094 9.16667ZM16.7094 13.3333H3.29024C2.85524 13.3333 2.50024 13.6892 2.50024 14.1242V14.2092C2.50024 14.6442 2.85524 15 3.29024 15H16.7094C17.1444 15 17.5002 14.6442 17.5002 14.2092V14.1242C17.5002 13.6892 17.1444 13.3333 16.7094 13.3333Z"></path>
+                    </mask>
+                    <g mask="url(#burger)">
+                      <rect width="20" height="20"></rect>
+                    </g>
+                  </svg>
+                </a>
+              </div>
+              <div class="d-print-none Header_root__2F68z">
+                <div class="Header_searchCollapse__EOiOA ml-lg-0 mr-md-3 collapse">
+                  <div class="Header_navbarForm__yXrB3  input-group">
+                    <div class="Header_inputAddon__3VMR_ input-group-prepend"><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                    <input id="search-input-2" placeholder="Search..." type="text" class="input-transparent form-control">
+                  </div>
+                </div>
+                <form class="d-md-down-none mr-3 ml-3 form-inline">
+                  <div class="form-group">
+                    <div class="input-group-no-border Header_searchForm__3m2El input-group">
+                      <div class="input-group-prepend">
+                        <span class="Header_inputGroupText__1aqTd input-group-text">
+                          <svg class="Header_headerIcon__14K5N" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M4.16667 9.16667C4.16667 6.40917 6.40917 4.16667 9.16667 4.16667C11.9242 4.16667 14.1667 6.40917 14.1667 9.16667C14.1667 11.9242 11.9242 14.1667 9.16667 14.1667C6.40917 14.1667 4.16667 11.9242 4.16667 9.16667ZM17.2558 16.0775L14.4267 13.2475C15.3042 12.1192 15.8333 10.705 15.8333 9.16667C15.8333 5.49083 12.8425 2.5 9.16667 2.5C5.49083 2.5 2.5 5.49083 2.5 9.16667C2.5 12.8425 5.49083 15.8333 9.16667 15.8333C10.705 15.8333 12.1192 15.3042 13.2475 14.4267L16.0775 17.2558C16.24 17.4183 16.4533 17.5 16.6667 17.5C16.88 17.5 17.0933 17.4183 17.2558 17.2558C17.5817 16.93 17.5817 16.4033 17.2558 16.0775Z"></path>
+                            <mask id="search" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="16" height="16">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M4.16667 9.16667C4.16667 6.40917 6.40917 4.16667 9.16667 4.16667C11.9242 4.16667 14.1667 6.40917 14.1667 9.16667C14.1667 11.9242 11.9242 14.1667 9.16667 14.1667C6.40917 14.1667 4.16667 11.9242 4.16667 9.16667ZM17.2558 16.0775L14.4267 13.2475C15.3042 12.1192 15.8333 10.705 15.8333 9.16667C15.8333 5.49083 12.8425 2.5 9.16667 2.5C5.49083 2.5 2.5 5.49083 2.5 9.16667C2.5 12.8425 5.49083 15.8333 9.16667 15.8333C10.705 15.8333 12.1192 15.3042 13.2475 14.4267L16.0775 17.2558C16.24 17.4183 16.4533 17.5 16.6667 17.5C16.88 17.5 17.0933 17.4183 17.2558 17.2558C17.5817 16.93 17.5817 16.4033 17.2558 16.0775Z"></path>
+                            </mask>
+                            <g mask="url(#search)">
+                              <rect width="20" height="20"></rect>
+                            </g>
+                          </svg>
+                        </span>
+                      </div>
+                      <input id="search-input" placeholder="Search Dashboard" type="text" class="input-transparent form-control">
+                    </div>
+                  </div>
+                </form>
+                <ul class="ml-md-0 nav">
+
+                  <li class="d-lg-none nav-item">
+                    <a href="#" class="Header_navItem__2wuiU nav-link">
+                      <svg class="Header_headerIcon__14K5N" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.16667 9.16667C4.16667 6.40917 6.40917 4.16667 9.16667 4.16667C11.9242 4.16667 14.1667 6.40917 14.1667 9.16667C14.1667 11.9242 11.9242 14.1667 9.16667 14.1667C6.40917 14.1667 4.16667 11.9242 4.16667 9.16667ZM17.2558 16.0775L14.4267 13.2475C15.3042 12.1192 15.8333 10.705 15.8333 9.16667C15.8333 5.49083 12.8425 2.5 9.16667 2.5C5.49083 2.5 2.5 5.49083 2.5 9.16667C2.5 12.8425 5.49083 15.8333 9.16667 15.8333C10.705 15.8333 12.1192 15.3042 13.2475 14.4267L16.0775 17.2558C16.24 17.4183 16.4533 17.5 16.6667 17.5C16.88 17.5 17.0933 17.4183 17.2558 17.2558C17.5817 16.93 17.5817 16.4033 17.2558 16.0775Z"></path>
+                        <mask id="header-search" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="16" height="16">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M4.16667 9.16667C4.16667 6.40917 6.40917 4.16667 9.16667 4.16667C11.9242 4.16667 14.1667 6.40917 14.1667 9.16667C14.1667 11.9242 11.9242 14.1667 9.16667 14.1667C6.40917 14.1667 4.16667 11.9242 4.16667 9.16667ZM17.2558 16.0775L14.4267 13.2475C15.3042 12.1192 15.8333 10.705 15.8333 9.16667C15.8333 5.49083 12.8425 2.5 9.16667 2.5C5.49083 2.5 2.5 5.49083 2.5 9.16667C2.5 12.8425 5.49083 15.8333 9.16667 15.8333C10.705 15.8333 12.1192 15.3042 13.2475 14.4267L16.0775 17.2558C16.24 17.4183 16.4533 17.5 16.6667 17.5C16.88 17.5 17.0933 17.4183 17.2558 17.2558C17.5817 16.93 17.5817 16.4033 17.2558 16.0775Z"></path>
+                        </mask>
+                        <g mask="url(#header-search)">
+                          <rect width="20" height="20"></rect>
+                        </g>
+                      </svg>
+                    </a>
+                  </li>
+                  <li class="Header_divider__36lBj d-none d-sm-block nav-item"></li>
+                  <li class="d-none d-sm-block dropdown nav-item">
+                    <a aria-haspopup="true" href="#" class="Header_navItem__2wuiU text-white nav-link" aria-expanded="false">
+                      <svg class="Header_headerIcon__14K5N" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M3.66898 9.68508C4.59898 10.0042 5.33981 10.7826 5.64981 11.7692L5.68314 11.8692C6.03814 12.9159 5.89398 14.0426 5.29898 14.8876C5.19064 15.0409 5.21481 15.2242 5.32898 15.3109L7.05564 16.6226C7.11648 16.6684 7.17564 16.6684 7.21231 16.6642C7.25398 16.6576 7.31481 16.6351 7.36398 16.5651L7.55648 16.2917C8.13064 15.4776 9.05564 14.9751 10.0323 14.9467C11.129 14.9242 12.114 15.4267 12.7273 16.3126L12.8256 16.4551C12.8748 16.5251 12.9348 16.5484 12.9773 16.5551C13.014 16.5626 13.074 16.5601 13.134 16.5134L14.8515 15.2176C14.9715 15.1276 14.9981 14.9351 14.909 14.8059L14.6923 14.4934C14.134 13.6867 13.9681 12.6401 14.249 11.6942C14.554 10.6642 15.3298 9.84925 16.3256 9.51591L16.4931 9.45925C16.6273 9.41508 16.6998 9.24841 16.6523 9.09508L15.9965 6.99425C15.9656 6.89592 15.9023 6.85175 15.8673 6.83341C15.8173 6.80758 15.7631 6.80341 15.7115 6.82091L15.4281 6.91508C14.459 7.23758 13.3898 7.06258 12.569 6.44508L12.479 6.37758C11.699 5.79092 11.2348 4.84508 11.2381 3.84841L11.2398 3.61508C11.2398 3.50425 11.1873 3.43508 11.1556 3.40341C11.1256 3.37258 11.0748 3.33591 11.0031 3.33591L8.88064 3.33341C8.75064 3.33341 8.64481 3.45758 8.64398 3.61091L8.64314 3.81258C8.63898 4.82508 8.16481 5.78841 7.37481 6.39091L7.26731 6.47258C6.39814 7.13341 5.26481 7.32008 4.23814 6.97008C4.19898 6.95675 4.16231 6.95925 4.12731 6.97758C4.10064 6.99091 4.05231 7.02508 4.02898 7.10091L3.34814 9.26425C3.29898 9.42175 3.37981 9.58591 3.53231 9.63841L3.66898 9.68508ZM7.17814 18.3334C6.77314 18.3334 6.37981 18.2017 6.04814 17.9492L4.32148 16.6384C3.49648 16.0134 3.31398 14.8109 3.91398 13.9584C4.22564 13.5167 4.28981 12.9492 4.10648 12.4109L4.06064 12.2709C3.90814 11.7859 3.55981 11.4092 3.12898 11.2617H3.12814L2.99231 11.2142C1.97731 10.8667 1.43564 9.79091 1.75814 8.76425L2.43814 6.60175C2.59231 6.11258 2.92481 5.71758 3.37481 5.49008C3.81481 5.26841 4.31231 5.23425 4.77731 5.39341C5.27648 5.56341 5.83064 5.47091 6.25814 5.14591L6.36564 5.06425C6.74564 4.77425 6.97481 4.30341 6.97648 3.80591L6.97731 3.60508C6.98148 2.53508 7.83564 1.66675 8.87981 1.66675H8.88314L11.0056 1.66925C11.5073 1.67008 11.9806 1.86841 12.3373 2.22758C12.7065 2.59841 12.9081 3.09425 12.9065 3.62341L12.9048 3.85591C12.9031 4.32758 13.119 4.77341 13.4831 5.04675L13.5723 5.11425C13.9548 5.40175 14.4531 5.48425 14.9006 5.33425L15.1831 5.24008C15.664 5.08008 16.1756 5.11925 16.6265 5.35008C17.089 5.58675 17.4306 5.99425 17.5873 6.49841L18.2431 8.59925C18.5598 9.61425 18.0115 10.7092 17.0223 11.0401L16.8548 11.0959C16.3748 11.2576 15.9973 11.6576 15.8465 12.1676C15.7081 12.6351 15.7881 13.1492 16.0623 13.5442L16.279 13.8567C16.874 14.7167 16.684 15.9234 15.8556 16.5476L14.1381 17.8442C13.7256 18.1559 13.2198 18.2817 12.7123 18.2009C12.2006 18.1184 11.754 17.8351 11.4548 17.4034L11.3565 17.2601C11.0648 16.8401 10.5981 16.5851 10.109 16.6126C9.61898 16.6259 9.19564 16.8584 8.91898 17.2517L8.72648 17.5251C8.42481 17.9526 7.97731 18.2317 7.46814 18.3117C7.37064 18.3267 7.27398 18.3334 7.17814 18.3334ZM9.99998 8.75C9.31081 8.75 8.74998 9.31084 8.74998 10C8.74998 10.6892 9.31081 11.25 9.99998 11.25C10.6891 11.25 11.25 10.6892 11.25 10C11.25 9.31084 10.6891 8.75 9.99998 8.75ZM9.99998 12.9167C8.39164 12.9167 7.08331 11.6083 7.08331 10C7.08331 8.39167 8.39164 7.08333 9.99998 7.08333C11.6083 7.08333 12.9166 8.39167 12.9166 10C12.9166 11.6083 11.6083 12.9167 9.99998 12.9167Z"></path>
+                        <mask id="header-settings" mask-type="alpha" maskUnits="userSpaceOnUse" x="1" y="1" width="18" height="18">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M3.66898 9.68508C4.59898 10.0042 5.33981 10.7826 5.64981 11.7692L5.68314 11.8692C6.03814 12.9159 5.89398 14.0426 5.29898 14.8876C5.19064 15.0409 5.21481 15.2242 5.32898 15.3109L7.05564 16.6226C7.11648 16.6684 7.17564 16.6684 7.21231 16.6642C7.25398 16.6576 7.31481 16.6351 7.36398 16.5651L7.55648 16.2917C8.13064 15.4776 9.05564 14.9751 10.0323 14.9467C11.129 14.9242 12.114 15.4267 12.7273 16.3126L12.8256 16.4551C12.8748 16.5251 12.9348 16.5484 12.9773 16.5551C13.014 16.5626 13.074 16.5601 13.134 16.5134L14.8515 15.2176C14.9715 15.1276 14.9981 14.9351 14.909 14.8059L14.6923 14.4934C14.134 13.6867 13.9681 12.6401 14.249 11.6942C14.554 10.6642 15.3298 9.84925 16.3256 9.51591L16.4931 9.45925C16.6273 9.41508 16.6998 9.24841 16.6523 9.09508L15.9965 6.99425C15.9656 6.89592 15.9023 6.85175 15.8673 6.83341C15.8173 6.80758 15.7631 6.80341 15.7115 6.82091L15.4281 6.91508C14.459 7.23758 13.3898 7.06258 12.569 6.44508L12.479 6.37758C11.699 5.79092 11.2348 4.84508 11.2381 3.84841L11.2398 3.61508C11.2398 3.50425 11.1873 3.43508 11.1556 3.40341C11.1256 3.37258 11.0748 3.33591 11.0031 3.33591L8.88064 3.33341C8.75064 3.33341 8.64481 3.45758 8.64398 3.61091L8.64314 3.81258C8.63898 4.82508 8.16481 5.78841 7.37481 6.39091L7.26731 6.47258C6.39814 7.13341 5.26481 7.32008 4.23814 6.97008C4.19898 6.95675 4.16231 6.95925 4.12731 6.97758C4.10064 6.99091 4.05231 7.02508 4.02898 7.10091L3.34814 9.26425C3.29898 9.42175 3.37981 9.58591 3.53231 9.63841L3.66898 9.68508ZM7.17814 18.3334C6.77314 18.3334 6.37981 18.2017 6.04814 17.9492L4.32148 16.6384C3.49648 16.0134 3.31398 14.8109 3.91398 13.9584C4.22564 13.5167 4.28981 12.9492 4.10648 12.4109L4.06064 12.2709C3.90814 11.7859 3.55981 11.4092 3.12898 11.2617H3.12814L2.99231 11.2142C1.97731 10.8667 1.43564 9.79091 1.75814 8.76425L2.43814 6.60175C2.59231 6.11258 2.92481 5.71758 3.37481 5.49008C3.81481 5.26841 4.31231 5.23425 4.77731 5.39341C5.27648 5.56341 5.83064 5.47091 6.25814 5.14591L6.36564 5.06425C6.74564 4.77425 6.97481 4.30341 6.97648 3.80591L6.97731 3.60508C6.98148 2.53508 7.83564 1.66675 8.87981 1.66675H8.88314L11.0056 1.66925C11.5073 1.67008 11.9806 1.86841 12.3373 2.22758C12.7065 2.59841 12.9081 3.09425 12.9065 3.62341L12.9048 3.85591C12.9031 4.32758 13.119 4.77341 13.4831 5.04675L13.5723 5.11425C13.9548 5.40175 14.4531 5.48425 14.9006 5.33425L15.1831 5.24008C15.664 5.08008 16.1756 5.11925 16.6265 5.35008C17.089 5.58675 17.4306 5.99425 17.5873 6.49841L18.2431 8.59925C18.5598 9.61425 18.0115 10.7092 17.0223 11.0401L16.8548 11.0959C16.3748 11.2576 15.9973 11.6576 15.8465 12.1676C15.7081 12.6351 15.7881 13.1492 16.0623 13.5442L16.279 13.8567C16.874 14.7167 16.684 15.9234 15.8556 16.5476L14.1381 17.8442C13.7256 18.1559 13.2198 18.2817 12.7123 18.2009C12.2006 18.1184 11.754 17.8351 11.4548 17.4034L11.3565 17.2601C11.0648 16.8401 10.5981 16.5851 10.109 16.6126C9.61898 16.6259 9.19564 16.8584 8.91898 17.2517L8.72648 17.5251C8.42481 17.9526 7.97731 18.2317 7.46814 18.3117C7.37064 18.3267 7.27398 18.3334 7.17814 18.3334ZM9.99998 8.75C9.31081 8.75 8.74998 9.31084 8.74998 10C8.74998 10.6892 9.31081 11.25 9.99998 11.25C10.6891 11.25 11.25 10.6892 11.25 10C11.25 9.31084 10.6891 8.75 9.99998 8.75ZM9.99998 12.9167C8.39164 12.9167 7.08331 11.6083 7.08331 10C7.08331 8.39167 8.39164 7.08333 9.99998 7.08333C11.6083 7.08333 12.9166 8.39167 12.9166 10C12.9166 11.6083 11.6083 12.9167 9.99998 12.9167Z"></path>
+                        </mask>
+                        <g mask="url(#header-settings)">
+                          <rect width="20" height="20"></rect>
+                        </g>
+                      </svg>
+                    </a>
+                    <div tabindex="-1" role="menu" aria-hidden="true" class="Header_dropdownMenu__1mxYu Header_settings__1KebW dropdown-menu">
+                      <h6>Sidebar on the</h6>
+                      <div role="group" class="btn-group-sm btn-group"><button type="button" class="active btn btn-primary">Left</button><button type="button" class="btn btn-primary">Right</button></div>
+                      <h6 class="mt-2">Sidebar</h6>
+                      <div role="group" class="btn-group-sm btn-group"><button type="button" class="active btn btn-primary">Show</button><button type="button" class="btn btn-primary">Hide</button></div>
+                    </div>
+                  </li>
+                  <li class="d-none d-sm-block dropdown nav-item">
+                    <a aria-haspopup="true" href="#" class="Header_navItem__2wuiU text-white nav-link" aria-expanded="false">
+                      <svg class="Header_headerIcon__14K5N" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.59538 13.3333L5.57872 12.3483C5.89372 12.0333 6.06705 11.615 6.06705 11.17V7.27248C6.06705 6.14165 6.55872 5.06082 7.41705 4.30915C8.28205 3.55082 9.38372 3.21748 10.5312 3.36832C12.4704 3.62582 13.9329 5.37915 13.9329 7.44748V11.17C13.9329 11.615 14.1062 12.0333 14.4204 12.3475L15.4045 13.3333H4.59538ZM11.6662 15.2842C11.6662 16.0333 10.9029 16.6667 9.99955 16.6667C9.09622 16.6667 8.33288 16.0333 8.33288 15.2842V15H11.6662V15.2842ZM17.1004 12.6733L15.5995 11.17V7.44748C15.5995 4.54665 13.5145 2.08248 10.7495 1.71665C9.14788 1.50332 7.53121 1.99248 6.31871 3.05582C5.09871 4.12415 4.40038 5.66082 4.40038 7.27248L4.39955 11.17L2.89871 12.6733C2.50788 13.065 2.39205 13.6475 2.60371 14.1583C2.81621 14.67 3.31038 15 3.86371 15H6.66621V15.2842C6.66621 16.9658 8.16121 18.3333 9.99955 18.3333C11.8379 18.3333 13.3329 16.9658 13.3329 15.2842V15H16.1354C16.6887 15 17.182 14.67 17.3937 14.1591C17.6062 13.6475 17.4912 13.0641 17.1004 12.6733Z"></path>
+                        <mask id="bell" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="1" width="16" height="18">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M4.59538 13.3333L5.57872 12.3483C5.89372 12.0333 6.06705 11.615 6.06705 11.17V7.27248C6.06705 6.14165 6.55872 5.06082 7.41705 4.30915C8.28205 3.55082 9.38372 3.21748 10.5312 3.36832C12.4704 3.62582 13.9329 5.37915 13.9329 7.44748V11.17C13.9329 11.615 14.1062 12.0333 14.4204 12.3475L15.4045 13.3333H4.59538ZM11.6662 15.2842C11.6662 16.0333 10.9029 16.6667 9.99955 16.6667C9.09622 16.6667 8.33288 16.0333 8.33288 15.2842V15H11.6662V15.2842ZM17.1004 12.6733L15.5995 11.17V7.44748C15.5995 4.54665 13.5145 2.08248 10.7495 1.71665C9.14788 1.50332 7.53121 1.99248 6.31871 3.05582C5.09871 4.12415 4.40038 5.66082 4.40038 7.27248L4.39955 11.17L2.89871 12.6733C2.50788 13.065 2.39205 13.6475 2.60371 14.1583C2.81621 14.67 3.31038 15 3.86371 15H6.66621V15.2842C6.66621 16.9658 8.16121 18.3333 9.99955 18.3333C11.8379 18.3333 13.3329 16.9658 13.3329 15.2842V15H16.1354C16.6887 15 17.182 14.67 17.3937 14.1591C17.6062 13.6475 17.4912 13.0641 17.1004 12.6733Z"></path>
+                        </mask>
+                        <g mask="url(#bell)">
+                          <rect width="20" height="20"></rect>
+                        </g>
+                      </svg>
+                      <span class="Header_count__36vNE"></span>
+                    </a>
+                    <div tabindex="-1" role="menu" aria-hidden="true" class="Header_dropdownMenu__1mxYu Header_support__2ymjq dropdown-menu dropdown-menu-right">
+                      <button type="button" tabindex="0" role="menuitem" class="dropdown-item">
+                        <span class="badge badge-danger"><i class="fa fa-bell-o"></i></span>
+                        <div class="Header_details__1kgO0">Check out this awesome ticket</div>
+                      </button>
+                      <button type="button" tabindex="0" role="menuitem" class="dropdown-item">
+                        <span class="badge badge-warning"><i class="fa fa-question-circle"></i></span>
+                        <div class="Header_details__1kgO0">What is the best way to get ...</div>
+                      </button>
+                      <button type="button" tabindex="0" role="menuitem" class="dropdown-item">
+                        <span class="badge badge-success"><i class="fa fa-info-circle"></i></span>
+                        <div class="Header_details__1kgO0">This is just a simple notification</div>
+                      </button>
+                      <button type="button" tabindex="0" role="menuitem" class="dropdown-item">
+                        <span class="badge badge-info"><i class="fa fa-plus"></i></span>
+                        <div class="Header_details__1kgO0">12 new orders has arrived today</div>
+                      </button>
+                      <button type="button" tabindex="0" role="menuitem" class="dropdown-item">
+                        <span class="badge badge-danger"><i class="fa fa-tag"></i></span>
+                        <div class="Header_details__1kgO0">One more thing that just happened</div>
+                      </button>
+                      <button type="button" tabindex="0" role="menuitem" class="dropdown-item">
+                        <a href="#" class="text-white">
+                          See all tickets 
+                          <svg class="Header_headerIcon__14K5N" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.33329 8.66668H11.2433L8.82129 11.5733C8.58529 11.856 8.62396 12.2767 8.90663 12.512C9.18996 12.748 9.60996 12.7093 9.84596 12.4267L13.1793 8.42668C13.2053 8.39534 13.218 8.35868 13.2373 8.32401C13.2533 8.29601 13.2726 8.27201 13.2846 8.24134C13.3146 8.16468 13.3326 8.08401 13.3326 8.00268C13.3326 8.00201 13.3333 8.00068 13.3333 8.00001C13.3333 7.99934 13.3326 7.99801 13.3326 7.99734C13.3326 7.91601 13.3146 7.83534 13.2846 7.75868C13.2726 7.72801 13.2533 7.70401 13.2373 7.67601C13.218 7.64134 13.2053 7.60468 13.1793 7.57334L9.84596 3.57334C9.71329 3.41534 9.52396 3.33334 9.33329 3.33334C9.18263 3.33334 9.03129 3.38401 8.90663 3.48801C8.62396 3.72334 8.58529 4.14401 8.82129 4.42668L11.2433 7.33334H3.33329C2.96529 7.33334 2.66663 7.63201 2.66663 8.00001C2.66663 8.36801 2.96529 8.66668 3.33329 8.66668Z"></path>
+                            <mask id="bellArrow" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="3" width="12" height="10">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M3.33329 8.66668H11.2433L8.82129 11.5733C8.58529 11.856 8.62396 12.2767 8.90663 12.512C9.18996 12.748 9.60996 12.7093 9.84596 12.4267L13.1793 8.42668C13.2053 8.39534 13.218 8.35868 13.2373 8.32401C13.2533 8.29601 13.2726 8.27201 13.2846 8.24134C13.3146 8.16468 13.3326 8.08401 13.3326 8.00268C13.3326 8.00201 13.3333 8.00068 13.3333 8.00001C13.3333 7.99934 13.3326 7.99801 13.3326 7.99734C13.3326 7.91601 13.3146 7.83534 13.2846 7.75868C13.2726 7.72801 13.2533 7.70401 13.2373 7.67601C13.218 7.64134 13.2053 7.60468 13.1793 7.57334L9.84596 3.57334C9.71329 3.41534 9.52396 3.33334 9.33329 3.33334C9.18263 3.33334 9.03129 3.38401 8.90663 3.48801C8.62396 3.72334 8.58529 4.14401 8.82129 4.42668L11.2433 7.33334H3.33329C2.96529 7.33334 2.66663 7.63201 2.66663 8.00001C2.66663 8.36801 2.96529 8.66668 3.33329 8.66668Z"></path>
+                            </mask>
+                            <g mask="url(#bellArrow)">
+                              <rect width="16" height="16"></rect>
+                            </g>
+                          </svg>
+                        </a>
+                      </button>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="Header_navItem__2wuiU text-white nav-link">
+                      <svg class="Header_headerIcon__14K5N" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10.8333 9.99998C10.8333 10.4608 10.4599 10.8333 9.99992 10.8333C9.53992 10.8333 9.16658 10.4608 9.16658 9.99998V1.66665C9.16658 1.20581 9.53992 0.833313 9.99992 0.833313C10.4599 0.833313 10.8333 1.20581 10.8333 1.66665V9.99998ZM12.699 2.95106C12.9098 2.54189 13.4132 2.38273 13.8215 2.59273C16.604 4.03189 18.3332 6.86939 18.3332 10.0002C18.3332 14.5944 14.5948 18.3336 9.99984 18.3336C5.40484 18.3336 1.6665 14.5944 1.6665 10.0002C1.6665 6.86939 3.39567 4.03189 6.179 2.59273C6.5865 2.38189 7.08984 2.54106 7.3015 2.95106C7.51317 3.35939 7.35234 3.86189 6.944 4.07356C4.7165 5.22439 3.33317 7.49523 3.33317 10.0002C3.33317 13.6761 6.324 16.6669 9.99984 16.6669C13.6757 16.6669 16.6665 13.6761 16.6665 10.0002C16.6665 7.49523 15.2832 5.22439 13.0565 4.07356C12.6473 3.86189 12.4873 3.35939 12.699 2.95106Z"></path>
+                        <mask id="power" mask-type="alpha" maskUnits="userSpaceOnUse" x="1" y="0" width="18" height="19">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M10.8333 9.99998C10.8333 10.4608 10.4599 10.8333 9.99992 10.8333C9.53992 10.8333 9.16658 10.4608 9.16658 9.99998V1.66665C9.16658 1.20581 9.53992 0.833313 9.99992 0.833313C10.4599 0.833313 10.8333 1.20581 10.8333 1.66665V9.99998ZM12.699 2.95106C12.9098 2.54189 13.4132 2.38273 13.8215 2.59273C16.604 4.03189 18.3332 6.86939 18.3332 10.0002C18.3332 14.5944 14.5948 18.3336 9.99984 18.3336C5.40484 18.3336 1.6665 14.5944 1.6665 10.0002C1.6665 6.86939 3.39567 4.03189 6.179 2.59273C6.5865 2.38189 7.08984 2.54106 7.3015 2.95106C7.51317 3.35939 7.35234 3.86189 6.944 4.07356C4.7165 5.22439 3.33317 7.49523 3.33317 10.0002C3.33317 13.6761 6.324 16.6669 9.99984 16.6669C13.6757 16.6669 16.6665 13.6761 16.6665 10.0002C16.6665 7.49523 15.2832 5.22439 13.0565 4.07356C12.6473 3.86189 12.4873 3.35939 12.699 2.95106Z"></path>
+                        </mask>
+                        <g mask="url(#power)">
+                          <rect width="20" height="20"></rect>
+                        </g>
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+            <nav class="Sidebar_root__3Hqzd">
+              <header class="Sidebar_logo__2Pwr2"><a href="https://demo.flatlogic.com/light-blue-react/">Product recommendation<span class="fw-bold"> System</span></a></header>
+              <ul class="Sidebar_nav__fi6uW">
+                <h5 class="Sidebar_navTitle__26xel Sidebar_groupTitle__3gwuT">APP</h5>
+                <li class="LinksGroup_headerLink__1HecB">
+                  <a class="LinksGroup_accordionToggle__2bvc4 LinksGroup_headerLinkActive__1bOO_ LinksGroup_collapsed__1nK35 d-flex" href="#" style="padding-left: 10px;">
+                    <span class="LinksGroup_icon__2R2OJ">
+                      <svg class="Sidebar_menuIcon__Gr5vO" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.5 9.16667C12.0392 9.16667 11.6667 9.54 11.6667 10C11.6667 10.9192 10.9192 11.6667 10 11.6667C9.08083 11.6667 8.33333 10.9192 8.33333 10C8.33333 9.54 7.96083 9.16667 7.5 9.16667C7.03917 9.16667 6.66667 9.54 6.66667 10C6.66667 11.8383 8.16167 13.3333 10 13.3333C11.8383 13.3333 13.3333 11.8383 13.3333 10C13.3333 9.54 12.9608 9.16667 12.5 9.16667ZM15 15.8333H5C4.54 15.8333 4.16667 15.4592 4.16667 15V7.5H15.8333V15C15.8333 15.4592 15.46 15.8333 15 15.8333ZM6.7675 4.41083C6.92333 4.25583 7.1375 4.16667 7.35667 4.16667H12.6433C12.8625 4.16667 13.0767 4.25583 13.2325 4.41083L14.655 5.83333H5.345L6.7675 4.41083ZM16.7675 5.58917L14.4108 3.2325C13.9392 2.76 13.3108 2.5 12.6433 2.5H7.35667C6.68917 2.5 6.06083 2.76 5.58917 3.2325L3.2325 5.58917C2.76 6.06083 2.5 6.68917 2.5 7.3575V15C2.5 16.3783 3.62167 17.5 5 17.5H15C16.3783 17.5 17.5 16.3783 17.5 15V7.3575C17.5 6.68917 17.24 6.06083 16.7675 5.58917Z"></path>
+                        <mask id="ecommerce" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="16" height="16">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M12.5 9.16667C12.0392 9.16667 11.6667 9.54 11.6667 10C11.6667 10.9192 10.9192 11.6667 10 11.6667C9.08083 11.6667 8.33333 10.9192 8.33333 10C8.33333 9.54 7.96083 9.16667 7.5 9.16667C7.03917 9.16667 6.66667 9.54 6.66667 10C6.66667 11.8383 8.16167 13.3333 10 13.3333C11.8383 13.3333 13.3333 11.8383 13.3333 10C13.3333 9.54 12.9608 9.16667 12.5 9.16667ZM15 15.8333H5C4.54 15.8333 4.16667 15.4592 4.16667 15V7.5H15.8333V15C15.8333 15.4592 15.46 15.8333 15 15.8333ZM6.7675 4.41083C6.92333 4.25583 7.1375 4.16667 7.35667 4.16667H12.6433C12.8625 4.16667 13.0767 4.25583 13.2325 4.41083L14.655 5.83333H5.345L6.7675 4.41083ZM16.7675 5.58917L14.4108 3.2325C13.9392 2.76 13.3108 2.5 12.6433 2.5H7.35667C6.68917 2.5 6.06083 2.76 5.58917 3.2325L3.2325 5.58917C2.76 6.06083 2.5 6.68917 2.5 7.3575V15C2.5 16.3783 3.62167 17.5 5 17.5H15C16.3783 17.5 17.5 16.3783 17.5 15V7.3575C17.5 6.68917 17.24 6.06083 16.7675 5.58917Z"></path>
+                        </mask>
+                        <g mask="url(#ecommerce)">
+                          <rect width="20" height="20"></rect>
+                        </g>
+                      </svg>
+                    </span>
+                    E-commerce <b class="fa fa-angle-right LinksGroup_caret__27HFx"></b>
+                  </a>
+                  <div class="LinksGroup_panel__1IXhv collapse show">
+                    <ul>
+                      <div>
+                        <li><a href="/" style="padding-left: 40px;">Products</a></li>
+                      </div>
+                      <div>
+                        <li><a href="popularity" style="padding-left: 40px;">Popularity Based</a></li>
+                      </div>
+                      <div>
+                        <li><a href="collaborative" style="padding-left: 40px;">Model Based</a></li>
+                      </div>
+                      <div>
+                        <li><a href="knn" style="padding-left: 40px;">KNN Based</a></li>
+                      </div>
+                      <div>
+                        <li><a href="hybrid" style="padding-left: 40px;" aria-current="page" class="LinksGroup_headerLinkActive__1bOO_">Hybrid based</a></li>
+                      </div>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+              <h5 class="Sidebar_navTitle__26xel Sidebar_groupTitle__3gwuT">LABELS</h5>
+              <ul class="Sidebar_sidebarLabels__2kJr-">
+                <li><a href="#"><i class="fa fa-circle text-success mr-2"></i><span class="Sidebar_labelName__xBH-n">My Recent</span></a></li>
+                <li><a href="#"><i class="fa fa-circle text-primary mr-2"></i><span class="Sidebar_labelName__xBH-n">Starred</span></a></li>
+                <li><a href="#"><i class="fa fa-circle text-danger mr-2"></i><span class="Sidebar_labelName__xBH-n">Background</span></a></li>
+              </ul>
+              <h5 class="Sidebar_navTitle__26xel Sidebar_groupTitle__3gwuT">PROJECTS</h5>
+              <div class="Sidebar_sidebarAlerts__3cpXr">
+                <div class="Sidebar_sidebarAlert__1hynk alert alert-transparent alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button><span>Sales Report</span><br>
+                  <div class="bg-subtle-blue progress-xs mt-1 progress">
+                    <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%;"></div>
+                  </div>
+                  <span class="Sidebar_alertFooter__1jW2C">Calculating x-axis bias... 65%</span>
+                </div>
+                <div class="Sidebar_sidebarAlert__1hynk alert alert-transparent alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" aria-label="Close"><span aria-hidden="true">×</span></button><span>Personal Responsibility</span><br>
+                  <div class="bg-subtle-blue progress-xs mt-1 progress">
+                    <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="23" aria-valuemin="0" aria-valuemax="100" style="width: 23%;"></div>
+                  </div>
+                  <span class="Sidebar_alertFooter__1jW2C">Provide required notes</span>
+                </div>
+              </div>
+            </nav>
+            <main class="Layout_content__3HuUL" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+              <div>
+                <nav class="" aria-label="breadcrumb">
+                  <div class="breadcrumb">
+                    <li class="breadcrumb-item">YOU ARE HERE</li>
+                    <li class="breadcrumb-item"><a href="#/app">App</a></li>
+                    <li class="breadcrumb-item"><a href="#/app/ecommerce">Ecommerce</a></li>
+                    <li class="breadcrumb-item">Management</li>
+                  </div>
+                </nav>
+              </div>
+              <div>
+                <div>
+                    <div class="page-top-line">
+                        <h2 class="page-title">Model-based <span class="fw-semi-bold">collaborative filtering system</span></h2>
+                    </div>
+                  <section class="widget Widget_widget__2TZ57 overflow-auto">
+                    <h5 class="Widget_title__3KVxS">List of Products</h5>
+                    <div class="Widget_widgetControls__3QeoL widget-controls"><span><button id="collapseId-62121fa1-d0b5-4076-bb5d-52ffce2e512f"><i class="la la-angle-down"></i></button></span><button id="closeId-62121fa1-d0b5-4076-bb5d-52ffce2e512f"><i class="la la-remove"></i></button></div>
+                    <div aria-hidden="false" class="rah-static rah-static--height-auto" style="height: auto; overflow: visible;">
+                      <div>
+                        <div class="Widget_widgetBody__2md2e widget-body ">
+                          <button type="button" class="btn btn-success">Create Product</button>
+                          <div class="react-bs-table-container table-responsive">
+                            <div class="react-bs-table-tool-bar ">
+                              <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+                                  <div class="btn-group btn-group-sm" role="group"></div>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+                                  <div class="form-group form-group-sm react-bs-table-search-form"><input class="form-control " type="text" placeholder="Search" value="" style="z-index: 0;"><span class="input-group-btn"></span></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="react-bs-table react-bs-table-bordered table-striped Management_bootstrapTable__kFbUo" style="height: 100%;">
+                              <div class="react-bs-container-header table-header-wrapper">
+                                <table class="table table-hover table-bordered">
+                                  <colgroup>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                  </colgroup>
+                                  <thead>
+                                    <tr>
+                                      <th class="width-50" data-is-only-head="false" data-field="id" style="text-align: left;">
+                                        <span class="fs-sm">ID</span>
+                                        <div></div>
+                                      </th>
+                                      <th class="" data-is-only-head="false" data-field="img" style="text-align: left;">
+                                        <span class="fs-sm">Image</span>
+                                        <div></div>
+                                      </th>
+                                      <th class="" data-is-only-head="false" data-field="title" style="text-align: left;">
+                                        <span class="fs-sm">Product Id</span>
+                                        <div></div>
+                                      </th>
+                                      <th class="" data-is-only-head="false" data-field="subtitle" style="text-align: left;">
+                                        <span class="fs-sm">Estimated rating</span>
+                                        <div></div>
+                                      </th>
+                                      <th class="" data-is-only-head="false" data-field="undefined" style="text-align: left;">
+                                        <span class="fs-sm">Api</span>
+                                        <div></div>
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                </table>
+                              </div>
+                              <div class="react-bs-container-body" style="height: 100%;">
+                                <table class="table table-bordered">
+                                  <colgroup>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                    <col>
+                                  </colgroup>
+                                  <tbody>
+                                    {% for recommendation in recommendation_list %}
+                                    <tr class="">
+                                        <td tabindex="1" class="width-50" style="text-align: left;">{{ recommendation.index }}</td>
+                                        <td tabindex="2" class="" style="text-align: left;">
+                                           
+                                            <img src='{% static "media/img" %}{{recommendation.index|modulo:6}}.jpg' alt="..." class="Management_image__3G7rV" title="image">
+                                            
+                                        </td>
+                                      <td tabindex="4" class="" style="text-align: left;">{{ recommendation.productId }}</td> 
+                                      <td tabindex="6" class="" style="text-align: left;">
+                                        <div class="Rating_rating__Lqx9p rating">
+                                            {{ recommendation.estimated_rating }}
+                                          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 49.94 49.94" width="17px" height="17px">
+                                            <path d="M48.856,22.73c0.983-0.958,1.33-2.364,0.906-3.671c-0.425-1.307-1.532-2.24-2.892-2.438l-12.092-1.757  c-0.515-0.075-0.96-0.398-1.19-0.865L28.182,3.043c-0.607-1.231-1.839-1.996-3.212-1.996c-1.372,0-2.604,0.765-3.211,1.996  L16.352,14c-0.23,0.467-0.676,0.79-1.191,0.865L3.069,16.622c-1.359,0.197-2.467,1.131-2.892,2.438  c-0.424,1.307-0.077,2.713,0.906,3.671l8.749,8.528c0.373,0.364,0.544,0.888,0.456,1.4L8.224,44.701  c-0.183,1.06,0.095,2.091,0.781,2.904c1.066,1.267,2.927,1.653,4.415,0.871l10.814-5.686c0.452-0.237,1.021-0.235,1.472,0  l10.815,5.686c0.526,0.277,1.087,0.417,1.666,0.417c1.057,0,2.059-0.47,2.748-1.288c0.687-0.813,0.964-1.846,0.781-2.904  l-2.065-12.042c-0.088-0.513,0.083-1.036,0.456-1.4L48.856,22.73z" fill="#ffc247"></path>
+                                          </svg>
+                                        </div>
+                                      </td>
+                                      <td tabindex="7" class="" style="text-align: left;">
+                                        <div role="toolbar" class="btn-toolbar"><button type="button" class="btn btn-primary btn-xs"><span class="d-none d-md-inline-block">Edit</span><span class="d-md-none"><i class="la la-edit"></i></span></button><button id="popoverDelete_1" class="btn btn-danger btn-xs"><span><span class="d-none d-md-inline-block">Delete</span><span class="d-md-none"><i class="la la-remove"></i></span></span></button></div>
+                                      </td>
+                                    </tr>
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div class="react-bs-table-pagination">
+                              <div class="row" style="margin-top: 15px;">
+                                <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                                  <span class="dropdown   react-bs-table-sizePerPage-dropdown">
+                                    <button class="btn btn-default btn-secondary dropdown-toggle" id="pageDropDown" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">10<span> <span class="caret"></span></span></button>
+                                    <div class="dropdown-menu " role="menu" aria-labelledby="pageDropDown"><a href="#" tabindex="-1" class="dropdown-item">10</a><a href="#" tabindex="-1" class="dropdown-item">25</a><a href="#" tabindex="-1" class="dropdown-item">30</a><a href="#" tabindex="-1" class="dropdown-item">50</a></div>
+                                  </span>
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6" style="display: block;">
+                                  <ul class="react-bootstrap-table-page-btns-ul pagination">
+                                    <li class="active page-item" title="1"><a href="#" class="page-link">1</a></li>
+                                    <li class="page-item" title="2"><a href="#" class="page-link">2</a></li>
+                                    <li class="page-item" title="next page"><a href="#" class="page-link">&gt;</a></li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="s-alert-wrapper"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                  <div class="Widget_widgetBackground__jmQhW" style="display: none;"></div>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div hidden="" style="width: 1px; height: 1px; position: absolute; z-index: -1000000;">
+      <div style="width: 100%; height: 100%; position: relative;">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="group" style="width: 100%; height: 100%; overflow: visible;">
+          <defs></defs>
+        </svg>
+      </div>
+    </div>
+    <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
+      <defs id="SvgjsDefs1002"></defs>
+      <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
+      <path id="SvgjsPath1004" d="M0 0 "></path>
+    </svg>
+  </body>
+</html>
