@@ -1,6 +1,0 @@
-[database]
-DATABASE_HOST = daniel-mysql.mysql.database.azure.com
-DATABASE_NAME = ai
-DATABASE_USER = daniel
-DATABASE_PASSWORD = password@123
-default-character-set = utf8
